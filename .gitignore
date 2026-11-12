@@ -1,0 +1,5 @@
+node_modules/
+web-backend/vendor/
+web-backend/.env
+kurir_priangan_app/node_modules/
+!apk/*.apk
