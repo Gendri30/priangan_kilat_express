@@ -13,6 +13,8 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class ZonaTarifResource extends Resource
 {
@@ -46,5 +48,16 @@ class ZonaTarifResource extends Resource
             'create' => CreateZonaTarif::route('/create'),
             'edit' => EditZonaTarif::route('/{record}/edit'),
         ];
+    }
+
+    //hak akses hanya manajer
+    public static function canCreate(): bool {
+        return Auth::user()?->role === 'manajer';
+    }
+    public static function canEdit(Model $record):bool {
+        return Auth::user()?->role ==='manajer';
+        }
+    public static function canDelete(Model $record):bool {
+        return false;
     }
 }

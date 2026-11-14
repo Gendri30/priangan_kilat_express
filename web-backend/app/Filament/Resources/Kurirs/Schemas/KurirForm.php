@@ -5,6 +5,8 @@ namespace App\Filament\Resources\Kurirs\Schemas;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Schema;
+use illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class KurirForm
 {
@@ -27,5 +29,15 @@ class KurirForm
                 Toggle::make('must_change_password')
                     ->required(),
             ]);
+    }
+    //hak akses admin
+    public static function canCreate(): bool{
+        return Auth::user()?->role === 'admin';
+    }
+    public static function canEdit(Model $record): bool{
+        return Auth::user()?->role ==='admin';
+    }
+    public static function canDelete(Model $record): bool{
+        return false;
     }
 }

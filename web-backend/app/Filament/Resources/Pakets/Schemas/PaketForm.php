@@ -8,7 +8,8 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Schema;
-
+use illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 class PaketForm
 {
     public static function configure(Schema $schema): Schema
@@ -91,5 +92,14 @@ class PaketForm
                     ->numeric()
                     ->default(0),
             ]);
+    }
+
+    //hak akses admin
+    public static function canCreate(): bool{
+        return Auth::user()?->role ==="admin";
+    }
+    //transakti paket ga bisa dihapus
+    public static function canDelete(Model $record): bool{
+        return false;
     }
 }
