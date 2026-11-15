@@ -49,7 +49,7 @@ class Paket extends Model
         return max(1, (int) ceil($beratAktual));
     }
 
-    //perhitungan ongkir
+    //perhitungan ongkir express
     public static function hitungOngkir(int $beratTagih, int $tarifPerKg, string $layanan): int{
         $dasar = $beratTagih * $tarifPerKg;
         return $layanan === 'Express' ? (int) round($dasar * 1.5) : $dasar;
@@ -57,7 +57,7 @@ class Paket extends Model
 
     //biaya cod
     public static function hitungBiayaCod(bool $isCod, int $nilaiCod){
-        if(!$isCod || $nilaiCod <= 0){
+        if(! $isCod || $nilaiCod <= 0){
             return 0;
         }
         return max(2000, (int) round($nilaiCod * 0.02));

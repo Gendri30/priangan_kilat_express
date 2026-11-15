@@ -15,13 +15,27 @@ class CreatePaket extends CreateRecord
     abort_unless(Auth::user()?->role === 'admin', 403, 'manajer tidak punya akses');
         parent::mount();
 }
-    protected function mutateFormDataBeforeCreate(array $data): array{
-        $data['no_resi']= Paket::generateNoResi();
-        $data['tanggal_masuk']= now();
-        $data['status']='Diterima';
-        $data['jumlah_gagal']=0;
-        $data['perlu_verifikasi']=false;
-        $data['status_setoran_cod']= !empty($data['is_cod'])? 'belum_disetor' : 'tidak_cod';
+    protected function mutateFormDataBeforeCreate(array $data): array
+    {
+        $zona = (int) ($data['zona'] ?? 0);
+        $tarifPerKg = (int) (\App\Models\ZonaTarif::where('zona', $zona)->value('tarif_per_kg') ?? 0);
+        $beratTagih = Paket::hitungBeratTagih((float) ($data['berat_aktual'] ?? 1));
+        $layanan = (string) ($data['layanan'] ?? 'Reguler');
+        $isCod = !empty($data['is_cod']);
+        $nilaiCod = $isCod ? (int) ($data['nilai_cod'] ?? 0) : 0;
+
+        $data['berat_tagih'] = $beratTagih;
+        $data['tarif_dasar_snapshot'] = $tarifPerKg;
+        $data['ongkos_kirim'] = Paket::hitungOngkir($beratTagih, $tarifPerKg, $layanan);
+        $data['nilai_cod'] = $nilaiCod;
+        $data['biaya_cod'] = Paket::hitungBiayaCod($isCod, $nilaiCod);
+
+        $data['no_resi'] = Paket::generateNoResi();
+        $data['tanggal_masuk'] = now();
+        $data['status'] = 'Diterima';
+        $data['jumlah_gagal'] = 0;
+        $data['perlu_verifikasi'] = false;
+        $data['status_setoran_cod'] = $isCod ? 'belum_disetor' : 'tidak_cod';
 
         return $data;
     }

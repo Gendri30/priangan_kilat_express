@@ -58,11 +58,14 @@ class PelangganResource extends Resource
         return Auth::user()?->role === 'admin';
     }
 
-    public static function canDelete(Model $record): bool{
-        return false;
+    public static function canDelete(Model $record): bool
+    {
+        return Auth::user()?->role === 'admin';
     }
 
-    public static function canDeleteAny(): bool{
-        return false;
+    public static function canDeleteAny(): bool
+    {
+        return Auth::user()?->role === 'admin';
+
     }
 }
