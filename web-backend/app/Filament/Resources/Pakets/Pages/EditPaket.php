@@ -10,10 +10,8 @@ class EditPaket extends EditRecord
 {
     protected static string $resource = PaketResource::class;
 
-    protected function getHeaderActions(): array
-    {
-        return [
-            DeleteAction::make(),
-        ];
+    public function mount(int|string $record): void{
+        abort(403, 'data transaksi tidak dapat di ubah');
     }
+
 }

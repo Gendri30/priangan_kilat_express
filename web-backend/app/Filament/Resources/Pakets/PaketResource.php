@@ -13,6 +13,8 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Model;
 
 class PaketResource extends Resource
 {
@@ -46,5 +48,25 @@ class PaketResource extends Resource
             'create' => CreatePaket::route('/create'),
             'edit' => EditPaket::route('/{record}/edit'),
         ];
+    }
+    // Hak akses: Hanya Admin yang bisa input paket; edit bebas & hapus dimatikan
+    public static function canCreate(): bool
+    {
+        return Auth::user()?->role === 'admin';
+    }
+
+    public static function canEdit(Model $record): bool
+    {
+        return false;
+    }
+
+    public static function canDelete(Model $record): bool
+    {
+        return false;
+    }
+
+    public static function canDeleteAny(): bool
+    {
+        return false;
     }
 }

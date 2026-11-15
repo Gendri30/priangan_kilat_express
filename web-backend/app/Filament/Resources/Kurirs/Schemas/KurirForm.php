@@ -30,14 +30,5 @@ class KurirForm
                     ->required(),
             ]);
     }
-    //hak akses admin
-    public static function canCreate(): bool{
-        return Auth::user()?->role === 'admin';
-    }
-    public static function canEdit(Model $record): bool{
-        return Auth::user()?->role ==='admin';
-    }
-    public static function canDelete(Model $record): bool{
-        return false;
-    }
+    
 }

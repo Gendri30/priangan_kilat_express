@@ -50,14 +50,9 @@ class ZonaTarifResource extends Resource
         ];
     }
 
-    //hak akses hanya manajer
-    public static function canCreate(): bool {
-        return Auth::user()?->role === 'manajer';
-    }
-    public static function canEdit(Model $record):bool {
-        return Auth::user()?->role ==='manajer';
-        }
-    public static function canDelete(Model $record):bool {
-        return false;
-    }
+    //hanya manajer yang bisa liat
+    public static function canViewAny(): bool
+{
+    return Auth::user()?->role === 'manajer';
+}
 }

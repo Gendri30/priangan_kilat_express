@@ -13,6 +13,9 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Override;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Model;
 
 class KurirResource extends Resource
 {
@@ -46,5 +49,18 @@ class KurirResource extends Resource
             'create' => CreateKurir::route('/create'),
             'edit' => EditKurir::route('/{record}/edit'),
         ];
+    }
+    //hak akses admin
+    public static function canCreate(): bool{
+        return Auth::user()?->role === 'admin';
+    }
+    public static function canEdit(Model $record): bool{
+        return Auth::user()?->role ==='admin';
+    }
+    public static function canDelete(Model $record): bool{
+        return false;
+    }
+    public static function canDeleteAny(): bool{
+        return false;
     }
 }

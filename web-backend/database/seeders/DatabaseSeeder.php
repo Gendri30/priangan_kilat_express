@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
                         'username'=>'manajer',
                         'email' =>'manajer@pke.id',
                         'password'=> Hash::make('manajer123'),
-                        'role'=> 'admin'
+                        'role'=> 'manajer'
                         ]);
 
         ZonaTarif::create(['zona' => 1, 'nama_zona' => 'Bandung Raya', 'tarif_per_kg' => 8000]);

@@ -9,7 +9,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
     class Kurir extends Authenticatable{
     use HasApiTokens;
 
-    protected $filable =['kode_kurir','nama','no_telepon','password','is_active','must_change_password'];
+    protected $fillable =['kode_kurir','nama','no_telepon','password','is_active','must_change_password'];
 
     //menyembunyikan password biar ga bocor saat di kirim ke json
     protected $hidden = ['password'];

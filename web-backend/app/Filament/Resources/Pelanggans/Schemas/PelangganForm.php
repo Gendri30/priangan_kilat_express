@@ -2,11 +2,9 @@
 
 namespace App\Filament\Resources\Pelanggans\Schemas;
 
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
-use illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
 
 class PelangganForm
 {
@@ -15,24 +13,23 @@ class PelangganForm
         return $schema
             ->components([
                 TextInput::make('nama')
-                    ->required(),
+                    ->label('Nama Lengkap Pengirim')
+                    ->required()
+                    ->maxLength(255),
+
                 TextInput::make('no_telepon')
+                    ->label('No. Telepon')
                     ->tel()
-                    ->required(),
+                    ->required()
+                    ->rules(['regex:/^[0-9]{10,15}$/'])
+                    ->validationMessages([
+                        'regex' => 'Nomor telepon wajib berupa angka minimal 10 digit (tanpa huruf/spasi).',
+                    ]),
+
                 Textarea::make('alamat')
+                    ->label('Alamat Lengkap')
                     ->required()
                     ->columnSpanFull(),
             ]);
-    }
-
-    //hak akses admin
-    public static function canCreate(): bool{
-        return Auth::user()?->role === 'admin';
-    }
-    public static function canEdit(Model $record): bool{
-        return Auth::user()?->role ==='admin';
-    }
-    public static function canDelete(Model $record): bool{
-        return false;
     }
 }

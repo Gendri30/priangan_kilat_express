@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use illuminate\Support\Carbon;
+use Illuminate\Support\Carbon;
 
 class Paket extends Model
 {
@@ -30,7 +30,7 @@ class Paket extends Model
     }
 
     //membuat resi otomatis harian Format: PKE-YYMMDD-0001
-    public function generateNoResi (?Carbon $tanggal = null):string{
+    public static function generateNoResi (?Carbon $tanggal = null):string{
         $tgl = $tanggal ?? now();
         $prefix = 'PKE-' . $tgl->format('ymd') . '-';
 

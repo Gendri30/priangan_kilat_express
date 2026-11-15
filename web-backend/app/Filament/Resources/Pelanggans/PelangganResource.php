@@ -13,6 +13,8 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class PelangganResource extends Resource
 {
@@ -46,5 +48,21 @@ class PelangganResource extends Resource
             'create' => CreatePelanggan::route('/create'),
             'edit' => EditPelanggan::route('/{record}/edit'),
         ];
+    }
+    //akses admin
+    public static function canCreate(): bool{
+        return Auth::user()?->role === 'admin';
+    }
+
+    public static function canEdit(Model $record): bool{
+        return Auth::user()?->role === 'admin';
+    }
+
+    public static function canDelete(Model $record): bool{
+        return false;
+    }
+
+    public static function canDeleteAny(): bool{
+        return false;
     }
 }
