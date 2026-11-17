@@ -2,11 +2,10 @@
 
 namespace App\Filament\Resources\ZonaTarifs\Tables;
 
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Auth;
 
 class ZonaTarifsTable
 {
@@ -15,32 +14,19 @@ class ZonaTarifsTable
         return $table
             ->columns([
                 TextColumn::make('zona')
-                    ->numeric()
+                    ->label('Zona')
                     ->sortable(),
                 TextColumn::make('nama_zona')
+                    ->label('Nama Wilayah')
                     ->searchable(),
                 TextColumn::make('tarif_per_kg')
-                    ->numeric()
+                    ->label('Tarif per Kg')
+                    ->money('IDR', locale: 'id')
                     ->sortable(),
-                TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-            ])
-            ->filters([
-                //
             ])
             ->recordActions([
-                EditAction::make(),
-            ])
-            ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                ]),
+                EditAction::make()
+                    ->visible(fn (): bool => Auth::user()?->role === 'manajer'),
             ]);
     }
 }

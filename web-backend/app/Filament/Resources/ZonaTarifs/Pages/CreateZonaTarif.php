@@ -9,8 +9,4 @@ use Override;
 class CreateZonaTarif extends CreateRecord
 {
     protected static string $resource = ZonaTarifResource::class;
-
-    public function mount(): void{
-        abort(403, 'tidak mendapat hak akses');
-    }
 }

@@ -2,11 +2,10 @@
 
 namespace App\Filament\Resources\Pelanggans\Tables;
 
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Auth;
 
 class PelanggansTable
 {
@@ -15,28 +14,20 @@ class PelanggansTable
         return $table
             ->columns([
                 TextColumn::make('nama')
-                    ->searchable(),
+                    ->label('Nama Pelanggan')
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('no_telepon')
+                    ->label('No. Telepon')
                     ->searchable(),
-                TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-            ])
-            ->filters([
-                //
+                TextColumn::make('alamat')
+                    ->label('Alamat')
+                    ->limit(50)
+                    ->searchable(),
             ])
             ->recordActions([
-                EditAction::make(),
-            ])
-            ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                ]),
+                EditAction::make()
+                    ->visible(fn (): bool => Auth::user()?->role === 'admin'),
             ]);
     }
 }

@@ -24,18 +24,15 @@ class PelangganResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'nama';
 
-    public static function form(Schema $schema): Schema
-    {
+    public static function form(Schema $schema): Schema{
         return PelangganForm::configure($schema);
     }
 
-    public static function table(Table $table): Table
-    {
+    public static function table(Table $table): Table{
         return PelanggansTable::configure($table);
     }
 
-    public static function getRelations(): array
-    {
+    public static function getRelations(): array{
         return [
             //
         ];
@@ -49,6 +46,7 @@ class PelangganResource extends Resource
             'edit' => EditPelanggan::route('/{record}/edit'),
         ];
     }
+
     //akses admin
     public static function canCreate(): bool{
         return Auth::user()?->role === 'admin';
@@ -58,14 +56,11 @@ class PelangganResource extends Resource
         return Auth::user()?->role === 'admin';
     }
 
-    public static function canDelete(Model $record): bool
-    {
-        return Auth::user()?->role === 'admin';
+    public static function canDelete(Model $record): bool{
+        return false;
     }
 
-    public static function canDeleteAny(): bool
-    {
-        return Auth::user()?->role === 'admin';
-
+    public static function canDeleteAny(): bool{
+        return false;
     }
 }

@@ -24,16 +24,13 @@ class PaketResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'no_resi';
 
-    public static function form(Schema $schema): Schema
-    {
+    public static function form(Schema $schema): Schema{
         return PaketForm::configure($schema);
     }
 
-    public static function table(Table $table): Table
-    {
+    public static function table(Table $table): Table{
         return PaketsTable::configure($table);
     }
-
     public static function getRelations(): array
     {
         return [
@@ -46,27 +43,23 @@ class PaketResource extends Resource
         return [
             'index' => ListPakets::route('/'),
             'create' => CreatePaket::route('/create'),
-            'edit' => EditPaket::route('/{record}/edit'),
         ];
     }
     // Hak akses: Hanya Admin yang bisa input paket; edit bebas & hapus dimatikan
-    public static function canCreate(): bool
-    {
+    public static function canCreate(): bool{
         return Auth::user()?->role === 'admin';
     }
 
-    public static function canEdit(Model $record): bool
-    {
+    // Data paket diupdate lewat tombol aksi status, bukan form edit bebas
+    public static function canEdit(Model $record): bool{
         return false;
     }
 
-    public static function canDelete(Model $record): bool
-    {
+    public static function canDelete(Model $record): bool{
         return false;
     }
 
-    public static function canDeleteAny(): bool
-    {
+    public static function canDeleteAny(): bool{
         return false;
     }
 }

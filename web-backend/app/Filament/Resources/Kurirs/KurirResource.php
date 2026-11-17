@@ -51,19 +51,24 @@ class KurirResource extends Resource
         ];
     }
     //hak akses admin
-    public static function canCreate(): bool{
-        return Auth::user()?->role === 'admin';
-    }
-    public static function canEdit(Model $record): bool{
-        return Auth::user()?->role ==='admin';
-    }
-    public static function canDelete(Model $record): bool
+    public static function canCreate(): bool
     {
         return Auth::user()?->role === 'admin';
     }
 
-    public static function canDeleteAny(): bool
+    public static function canEdit(Model $record): bool
     {
         return Auth::user()?->role === 'admin';
+    }
+
+    // Kurir tidak dihapus melainkan dinonaktifkan lewat toggle is_active
+    public static function canDelete(Model $record): bool
+    {
+        return false;
+    }
+
+    public static function canDeleteAny(): bool
+    {
+        return false;
     }
 }

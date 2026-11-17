@@ -12,13 +12,18 @@ class ZonaTarifForm
         return $schema
             ->components([
                 TextInput::make('zona')
-                    ->required()
-                    ->numeric(),
+                    ->label('Zona')
+                    ->disabled(),
+
                 TextInput::make('nama_zona')
-                    ->required(),
+                    ->label('Nama Wilayah Zona')
+                    ->disabled(),
+
                 TextInput::make('tarif_per_kg')
+                    ->label('Tarif per Kg (Rp)')
                     ->required()
-                    ->numeric(),
+                    ->numeric()
+                    ->minValue(1000),
             ]);
     }
 }

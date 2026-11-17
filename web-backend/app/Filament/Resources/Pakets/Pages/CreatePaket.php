@@ -3,25 +3,22 @@
 namespace App\Filament\Resources\Pakets\Pages;
 
 use App\Filament\Resources\Pakets\PaketResource;
-use Filament\Resources\Pages\CreateRecord;
 use App\Models\Paket;
+use App\Models\ZonaTarif;
+use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Support\Facades\Auth;
-
 
 class CreatePaket extends CreateRecord
 {
     protected static string $resource = PaketResource::class;
-    public function mount(): void{
-    abort_unless(Auth::user()?->role === 'admin', 403, 'manajer tidak punya akses');
-        parent::mount();
-}
+
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         $zona = (int) ($data['zona'] ?? 0);
-        $tarifPerKg = (int) (\App\Models\ZonaTarif::where('zona', $zona)->value('tarif_per_kg') ?? 0);
+        $tarifPerKg = (int) (ZonaTarif::where('zona', $zona)->value('tarif_per_kg') ?? 0);
         $beratTagih = Paket::hitungBeratTagih((float) ($data['berat_aktual'] ?? 1));
         $layanan = (string) ($data['layanan'] ?? 'Reguler');
-        $isCod = !empty($data['is_cod']);
+        $isCod = ! empty($data['is_cod']);
         $nilaiCod = $isCod ? (int) ($data['nilai_cod'] ?? 0) : 0;
 
         $data['berat_tagih'] = $beratTagih;
@@ -39,9 +36,16 @@ class CreatePaket extends CreateRecord
 
         return $data;
     }
-    protected function afterCreate():void{
+
+    protected function afterCreate(): void
+    {
         $adminNama = Auth::user()?->name ?? 'Admin Loket';
 
-        $this->record->catatRiwayat(status: 'Diterima', pelakuTipe:'Admin', pelakuNama: $adminNama, catatan: 'paket diterima di loket Priangan Kilat Express');
+        $this->record->catatRiwayat(
+            status: 'Diterima',
+            pelakuTipe: 'Admin',
+            pelakuNama: $adminNama,
+            catatan: 'Paket diterima di loket Priangan Kilat Express'
+        );
     }
 }

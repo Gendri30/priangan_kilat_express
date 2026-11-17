@@ -64,6 +64,10 @@ class PaketsTable
                     ->suffix(' kg')
                     ->sortable(),
 
+                IconColumn::make('perlu_verifikasi')
+                    ->label('Perlu Verifikasi')
+                    ->boolean(),
+
                 TextColumn::make('ongkos_kirim')
                     ->label('Ongkir')
                     ->money('IDR', locale: 'id')
@@ -101,11 +105,6 @@ class PaketsTable
                     ->label('Gagal')
                     ->suffix('x')
                     ->sortable(),
-
-                IconColumn::make('perlu_verifikasi')
-                    ->label('Perlu Verifikasi')
-                    ->boolean()
-                    ->toggleable(isToggledHiddenByDefault: true),
 
                 TextColumn::make('tanggal_masuk')
                     ->label('Tanggal Masuk')
@@ -169,19 +168,11 @@ class PaketsTable
                     ->form([
                         Select::make('kurir_id')
                             ->label('Pilih Kurir Aktif (Maks. 20 Paket Dikirim)')
-                            ->options(function () {
-                                return Kurir::where('is_active', true)
-                                    ->get()
-                                    ->mapWithKeys(function (Kurir $kurir) {
-                                        $bawaan = Paket::where('kurir_id', $kurir->id)
-                                            ->where('status', 'Dikirim')
-                                            ->count();
-
-                                        return [
-                                            $kurir->id => "{$kurir->kode_kurir} - {$kurir->nama} (Bawaan: {$bawaan}/20)",
-                                        ];
-                                    });
-                            })
+                            ->options(fn () => Kurir::where('is_active', true)
+                                ->get()
+                                ->mapWithKeys(fn (Kurir $kurir) => [
+                                    $kurir->id => "{$kurir->kode_kurir} - {$kurir->nama} (Bawaan: {$kurir->countPaketDikirim()}/20)",
+                                ]))
                             ->searchable()
                             ->required(),
                     ])
@@ -197,11 +188,7 @@ class PaketsTable
                             return;
                         }
 
-                        $jumlahDikirim = Paket::where('kurir_id', $kurir->id)
-                            ->where('status', 'Dikirim')
-                            ->count();
-
-                        if ($jumlahDikirim >= 20) {
+                        if (! $kurir->bisaDitugaskan()) {
                             Notification::make()
                                 ->title('Penugasan Ditolak')
                                 ->body("Kurir {$kurir->kode_kurir} ({$kurir->nama}) sudah membawa maksimal 20 paket berstatus Dikirim.")

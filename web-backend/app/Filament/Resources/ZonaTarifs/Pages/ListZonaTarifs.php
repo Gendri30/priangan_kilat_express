@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\ZonaTarifs\Pages;
 
 use App\Filament\Resources\ZonaTarifs\ZonaTarifResource;
-use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 
 class ListZonaTarifs extends ListRecords
@@ -12,8 +11,6 @@ class ListZonaTarifs extends ListRecords
 
     protected function getHeaderActions(): array
     {
-        return [
-            CreateAction::make(),
-        ];
+        return [];
     }
 }

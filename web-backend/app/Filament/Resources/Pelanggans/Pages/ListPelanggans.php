@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Pelanggans\Pages;
 use App\Filament\Resources\Pelanggans\PelangganResource;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
+use Illuminate\Support\Facades\Auth;
 
 class ListPelanggans extends ListRecords
 {
@@ -13,7 +14,8 @@ class ListPelanggans extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            CreateAction::make(),
+        CreateAction::make()
+            ->visible(fn (): bool => Auth::user()?->role === 'admin'),
         ];
     }
 }

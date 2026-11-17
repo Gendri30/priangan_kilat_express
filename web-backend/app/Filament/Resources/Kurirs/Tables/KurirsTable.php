@@ -2,12 +2,11 @@
 
 namespace App\Filament\Resources\Kurirs\Tables;
 
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Auth;
 
 class KurirsTable
 {
@@ -16,32 +15,22 @@ class KurirsTable
         return $table
             ->columns([
                 TextColumn::make('kode_kurir')
-                    ->searchable(),
+                    ->label('Kode Kurir')
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('nama')
+                    ->label('Nama Kurir')
                     ->searchable(),
                 TextColumn::make('no_telepon')
+                    ->label('No. Telepon')
                     ->searchable(),
                 IconColumn::make('is_active')
+                    ->label('Status Aktif')
                     ->boolean(),
-                TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-            ])
-            ->filters([
-                //
             ])
             ->recordActions([
-                EditAction::make(),
-            ])
-            ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                ]),
+                EditAction::make()
+                ->visible(fn (): bool => Auth::user()?->role === 'admin'),
             ]);
     }
 }
