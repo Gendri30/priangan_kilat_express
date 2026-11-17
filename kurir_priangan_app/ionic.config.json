@@ -1,7 +1,0 @@
-{
-  "name": "kurir_priangan_app",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "react-vite"
-}
