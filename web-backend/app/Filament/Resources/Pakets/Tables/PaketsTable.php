@@ -135,7 +135,7 @@ class PaketsTable
                     ->label('Perlu Verifikasi Berat'),
             ])
             ->recordActions([
-                // 1. Diterima -> Transit (Khusus Admin)
+                // 1. Diterima -> Transit
                 Action::make('ubah_transit')
                     ->label('Ubah ke Transit')
                     ->icon('heroicon-o-arrow-right-circle')
@@ -158,7 +158,7 @@ class PaketsTable
                             ->send();
                     }),
 
-                // 2. Transit / Gagal Kirim (< 2x) -> Tugaskan Kurir -> Dikirim (Maks. 20 Paket)
+                // Transit / Gagal Kirim < 2x
                 Action::make('tugaskan_kurir')
                     ->label(fn (Paket $record): string => $record->status === 'Gagal Kirim' ? 'Kirim Ulang' : 'Tugaskan Kurir')
                     ->icon('heroicon-o-truck')
@@ -217,7 +217,7 @@ class PaketsTable
                             ->send();
                     }),
 
-                // 3. Gagal Kirim (2x) -> Retur (Final)
+                //Gagal Kirim 2x = Retur
                 Action::make('ubah_retur')
                     ->label('Ubah ke Retur')
                     ->icon('heroicon-o-arrow-uturn-left')
@@ -242,7 +242,7 @@ class PaketsTable
                             ->send();
                     }),
 
-                // 4. Catat Setoran COD (Khusus Paket COD Terkirim yang Belum Disetor)
+                //Catat Setoran COD (Belum Disetor)
                 Action::make('catat_setoran_cod')
                     ->label('Catat Setoran COD')
                     ->icon('heroicon-o-banknotes')

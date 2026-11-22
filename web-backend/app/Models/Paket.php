@@ -73,7 +73,7 @@ class Paket extends Model
         return substr($hp, 0, 4) . $bintang . substr($hp, -3);
     }
 
-    //mempermudah penyimpanan rawat
+    //menyimpan ke riwayat status paket
     public function catatRiwayat(string $status, string $pelakuTipe, string $pelakuNama, ?string $catatan = null, ?Carbon $waktu = null) : void{
         $this->riwayatStatus()->create([
             'status' => $status,

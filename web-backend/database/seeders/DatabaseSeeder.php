@@ -69,10 +69,11 @@ class DatabaseSeeder extends Seeder
         );
 
         // 4. Syarat Wajib Ujian: KUR-02 harus membawa TEPAT 20 paket berstatus 'Dikirim'
+        // Hanya dijalankan setelah data awal CSV (paket_historis.csv) diimpor (Paket::count() > 0)
         // Di paket_historis.csv sudah ada 4 paket Dikirim milik KUR-02,
         // jadi perulangan di bawah hanya menambah sisanya (16 paket) sampai pas 20 paket
         $seedPaketCsv = storage_path('app/Varian_B_Ekspedisi/Data_Seeder_CSV/seed_paket_dikirim.csv');
-        if (file_exists($seedPaketCsv) && $kurir02->countPaketDikirim() < 20) {
+        if (file_exists($seedPaketCsv) && Paket::count() > 0 && $kurir02->countPaketDikirim() < 20) {
             // Buat 1 data pengirim contoh untuk paket demo
             $pelangganDemo = Pelanggan::firstOrCreate(
                 ['nama' => 'Pengirim Demo'],
