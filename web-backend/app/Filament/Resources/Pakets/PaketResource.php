@@ -45,7 +45,7 @@ class PaketResource extends Resource
             'create' => CreatePaket::route('/create'),
         ];
     }
-    // Hak akses: Hanya Admin yang bisa input paket; edit bebas & hapus dimatikan
+    // Hak akses: Hanya Admin yang bisa input paket
     public static function canCreate(): bool{
         return Auth::user()?->role === 'admin';
     }

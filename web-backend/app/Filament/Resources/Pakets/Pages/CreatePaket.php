@@ -36,6 +36,12 @@ class CreatePaket extends CreateRecord
 
         return $data;
     }
+    public function mount(): void
+    {
+        abort_unless(Auth::user()?->role === 'admin', 403);
+
+        parent::mount();
+    }
 
     protected function afterCreate(): void
     {

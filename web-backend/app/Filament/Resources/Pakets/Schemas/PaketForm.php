@@ -35,17 +35,19 @@ class PaketForm
                             ->required()
                             ->columnSpanFull()
                             ->createOptionForm([
-                                TextInput::make('nama')
-                                    ->label('Nama Pengirim')
-                                    ->required(),
-                                TextInput::make('no_telepon')
-                                    ->label('No. Telepon Pengirim')
-                                    ->tel()
-                                    ->required()
-                                    ->rules(['regex:/^[0-9]{10,15}$/'])
-                                    ->validationMessages([
-                                        'regex' => 'Nomor telepon wajib angka saja (minimal 10 digit).',
-                                    ]),
+                        TextInput::make('nama')
+                            ->label('Nama Pengirim')
+                            ->required(),
+                        TextInput::make('no_telepon')
+                            ->label('No. Telepon')
+                            ->tel()
+                            ->required()
+                            ->minLength(10)
+                            ->maxLength(14)
+                            ->rules(['regex:/^08[0-9]+$/'])
+                            ->validationMessages([
+                                'regex' => 'Nomor telepon wajib berisi angka saja dan diawali 08.',
+                            ]),
                                 Textarea::make('alamat')
                                     ->label('Alamat Pengirim')
                                     ->required(),
@@ -62,9 +64,11 @@ class PaketForm
                             ->label('No. Telepon Penerima')
                             ->tel()
                             ->required()
-                            ->rules(['regex:/^[0-9]{10,15}$/'])
+                            ->minLength(10)
+                            ->maxLength(14)
+                            ->rules(['regex:/^08[0-9]+$/'])
                             ->validationMessages([
-                                'regex' => 'Nomor telepon wajib angka saja (minimal 10 digit).',
+                                'regex' => 'Nomor telepon wajib berisi angka saja dan diawali 08.',
                             ]),
 
                         Textarea::make('alamat_penerima')

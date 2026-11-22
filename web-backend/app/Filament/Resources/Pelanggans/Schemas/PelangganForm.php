@@ -21,9 +21,11 @@ class PelangganForm
                     ->label('No. Telepon')
                     ->tel()
                     ->required()
-                    ->rules(['regex:/^[0-9]{10,15}$/'])
+                    ->minLength(10)
+                    ->maxLength(14)
+                    ->rules(['regex:/^08[0-9]+$/'])
                     ->validationMessages([
-                        'regex' => 'Nomor telepon wajib berupa angka minimal 10 digit (tanpa huruf/spasi).',
+                        'regex' => 'Nomor telepon wajib berisi angka saja dan diawali 08.',
                     ]),
 
                 Textarea::make('alamat')
